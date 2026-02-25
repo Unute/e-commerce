@@ -1,26 +1,38 @@
 import s from "./FilterPanel.module.scss";
-
 import Button from "@/components/UI/Button";
 import Input from "@/components/UI/Input";
+import MultiDropdown from "@/components/UI/MultiDropdown";
 import Text from "@/components/UI/Text";
+import { productListStore } from "@/stores/ProductListStore";
+import { observer } from "mobx-react-lite";
 
 type FilterPanelProps = {
   total?: number;
 };
 
-const FilterPanel = ({ total }: FilterPanelProps) => {
+const FilterPanel = observer(({ total }: FilterPanelProps) => {
   return (
     <div className={s.FilterPanel}>
       <div className={s.search}>
         <Input
           className={s.input}
-          value="Search product"
-          onChange={() => {
-            //TODO: сделать обработку поиска
-          }}
+          value={productListStore.searchQuery}
+          onChange={productListStore.setSearch}
+          placeholder="Search product"
         />
-        <Button>Search</Button>
+        <Button className={s.button} onClick={() => productListStore.fetchProducts()}>Find now</Button>
       </div>
+      <MultiDropdown
+        options={productListStore.categories}
+        value={productListStore.selectedCategories}
+        onChange={productListStore.setCategories}
+        getTitle={(selected) =>
+          selected.length === 0
+            ? "Filter"
+            : selected.map((o) => o.value).join(", ")
+        }
+        className={s.dropdown}
+      />
       <div className={s.text}>
         <Text className={s.totalProducts}>Total products</Text>
         <Text color="accent" className={s.total}>
@@ -29,6 +41,6 @@ const FilterPanel = ({ total }: FilterPanelProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default FilterPanel;

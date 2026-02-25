@@ -8,6 +8,7 @@ import { productListStore } from "@/stores/ProductListStore";
 const AllProductPage = observer(() => {
   
   useEffect(() => {
+    productListStore.fetchCategories();
     productListStore.fetchProducts();
   }, []);
 

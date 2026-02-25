@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import type { Product } from "@/types/product";
 import { getAllProducts } from "@/api/getAllProducts";
 import { toJS } from "mobx";
+import type { Option } from "@/components/UI/MultiDropdown";
 
 export class ProductListStore {
 
@@ -13,7 +14,8 @@ export class ProductListStore {
   total: number | undefined = undefined;
   loading: boolean = false;
   searchQuery: string = "";
-  selectedCategories: string[] = [];
+  selectedCategories: Option[] = []; // выбранные категории в формате MultiDropdown
+  categories: Option[] = [];         // все доступные категории для MultiDropdown
   currentPage: number = 1;
   pageSize: number = 9;
 
@@ -26,14 +28,15 @@ export class ProductListStore {
   }
 
   //actions
-  setSearch(query: string) {
+  setSearch = (query: string) => {
     this.searchQuery = query;
     this.currentPage = 1;
-    this.fetchProducts();
+    // this.fetchProducts();
   }
 
-  setCategories(ids: string[]) {
-    this.selectedCategories = ids;
+  // принимает Option[] — это то, что передаёт MultiDropdown при выборе
+  setCategories = (options: Option[]) => {
+    this.selectedCategories = options;
     this.currentPage = 1;
     this.fetchProducts();
   }
@@ -43,12 +46,14 @@ export class ProductListStore {
     this.fetchProducts();
   }
 
+
   async fetchProducts() {
     this.loading = true;
     try {
       const response = await getAllProducts({
         search: this.searchQuery,
-        categories: this.selectedCategories,
+        // передаём массив key (documentId категории) для фильтрации
+        categories: this.selectedCategories.map((o) => o.key),
         page: this.currentPage,
         pageSize: this.pageSize,
       });
@@ -66,6 +71,26 @@ export class ProductListStore {
         this.loading = false;
         console.log(toJS(this.products));
 
+      });
+    }
+  }
+
+  
+  async fetchCategories() {
+    try {
+      const response = await getAllProducts({ pageSize: 1000 });
+      runInAction(() => {
+        const unique = new Map<string, string>();
+        response.data.forEach((p) => {
+          if (p.productCategory) {
+            unique.set(p.productCategory.documentId, p.productCategory.title);
+          }
+        });
+        this.categories = Array.from(unique.entries()).map(([key, value]) => ({ key, value }));
+      });
+    } catch (e) {
+      runInAction(() => {
+        this.categories = [];
       });
     }
   }
