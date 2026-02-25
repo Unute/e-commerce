@@ -1,0 +1,80 @@
+@use '@styles/style.scss' as *;
+
+.header {
+  height: 90px;
+  background-color: #fff;
+  border-bottom: 2px solid #f3f3f3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  width: 100vw;
+  top: 0;
+  z-index: 100;
+
+  @include respond(md) {
+    height: 70px;
+    padding: 0 16px;
+  }
+
+  @include respond(sm) {
+    height: 60px;
+    padding: 0 8px;
+  }
+}
+
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 12px;
+  margin-left: clamp(1rem, 6vw, 6.25rem);
+  text-decoration: none;
+  cursor: pointer;
+
+  @include respond(md) {
+    gap: 8px;
+    margin-left: 1rem;
+  }
+
+  @include respond(sm) {
+    gap: 4px;
+    margin-left: 0.5rem;
+  }
+}
+
+.icon {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  margin-right: clamp(1rem, 6vw, 6.25rem);
+  justify-content: flex-end;
+
+  @include respond(md) {
+    gap: 12px;
+    margin-right: 1rem;
+  }
+
+  @include respond(sm) {
+    display: none;
+  }
+}
+
+.desktopNav {
+  display: block;
+
+  @include respond(sm) {
+    display: none;
+  }
+}
+
+.burgerWrapper {
+  display: none;
+
+  @include respond(sm) {
+    display: flex;
+    align-items: center;
+  }
+}
