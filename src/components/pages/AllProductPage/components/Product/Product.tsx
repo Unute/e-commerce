@@ -6,6 +6,8 @@ import type { ProductProps } from "./types";
 import Card from "@/components/UI/Card";
 import Loader from "@/components/UI/Loader";
 import { productListStore } from "@/stores/ProductListStore";
+import Button from "@/components/UI/Button";
+import { cartStore } from "@/stores/CartStore";
 
 const Product: React.FC<ProductProps> = observer(({ products, loading }) => {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const Product: React.FC<ProductProps> = observer(({ products, loading }) => {
           <div className={s.grid}>
             {products.map((product) => {
               const image: string = product.images[0].url;
+              const inCart = cartStore.isInCart(product.documentId);
               return (
                 <Card
                   key={product.documentId}
@@ -30,6 +33,18 @@ const Product: React.FC<ProductProps> = observer(({ products, loading }) => {
                   subtitle={product.description}
                   contentSlot={`$${product.price}`}
                   onClick={() => navigate(`/product/${product.documentId}`)}
+                  actionSlot={
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        inCart
+                          ? cartStore.removeFromCart(product.documentId)
+                          : cartStore.addToCart(product);
+                      }}
+                    >
+                      {inCart ? "Remove" : "Add to Cart"}
+                    </Button>
+                  }
                 />
               );
             })}

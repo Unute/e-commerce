@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type { Product } from "@/types/product";
 import { getAllProducts } from "@/api/getAllProducts";
-import { toJS } from "mobx";
 import type { Option } from "@/components/UI/MultiDropdown";
 
 export class ProductListStore {
@@ -18,6 +17,7 @@ export class ProductListStore {
   categories: Option[] = [];         // все доступные категории для MultiDropdown
   currentPage: number = 1;
   pageSize: number = 9;
+  pendingCategoryKeys: string[] = []; // ключи категорий из URL, ждут загрузки списка категорий
 
 
 
@@ -45,6 +45,21 @@ export class ProductListStore {
     this.fetchProducts();
   }
 
+  initFromParams = (params: { search: string; page: number; categoryKeys: string[] }) => {
+    this.searchQuery = params.search;
+    this.currentPage = params.page;
+    this.pendingCategoryKeys = params.categoryKeys;
+  }
+
+  restoreCategoriesFromKeys = () => {
+    if (this.pendingCategoryKeys.length > 0) {
+      this.selectedCategories = this.categories.filter((c) =>
+        this.pendingCategoryKeys.includes(c.key)
+      );
+      this.pendingCategoryKeys = [];
+    }
+  }
+
 
   async fetchProducts() {
     this.loading = true;
@@ -68,13 +83,11 @@ export class ProductListStore {
     } finally {
       runInAction(() => {
         this.loading = false;
-        console.log(toJS(this.products));
-
       });
     }
   }
 
-  
+
   async fetchCategories() {
     try {
       const response = await getAllProducts({ pageSize: 1000 });
