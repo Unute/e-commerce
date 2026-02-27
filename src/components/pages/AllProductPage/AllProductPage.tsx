@@ -5,9 +5,10 @@ import FilterPanel from "./components/FilterPanel";
 import MainText from "./components/MainText/MainText";
 import Product from "./components/Product/Product";
 import { observer } from "mobx-react-lite";
-import { productListStore } from "@/stores/ProductListStore";
+import { useStore } from "@/stores/context";
 
 const AllProductPage = observer(() => {
+  const { productListStore } = useStore();
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {

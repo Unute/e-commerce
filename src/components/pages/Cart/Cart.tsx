@@ -1,12 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
-import { cartStore } from "@/stores/CartStore";
+import { useStore } from "@/stores/context";
 import Button from "@/components/UI/Button";
 import Text from "@/components/UI/Text";
 import s from "./Cart.module.scss";
 
 const Cart = observer(() => {
   const navigate = useNavigate();
+  const { cartStore } = useStore();
 
   if (cartStore.items.length === 0) {
     return (

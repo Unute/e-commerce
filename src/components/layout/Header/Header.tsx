@@ -3,9 +3,10 @@ import { observer } from "mobx-react-lite";
 import s from "./Header.module.scss";
 import BurgerMenu from "./components/BurgerMenu/BurgerMenu";
 import TextHeader from "./components/TextHeader/TextHeader";
-import { cartStore } from "@/stores/CartStore";
+import { useStore } from "@/stores/context";
 
 const Header = observer(() => {
+  const { cartStore } = useStore();
   return (
     <header className={s.header}>
       <Link to="/" className={s.logo}>

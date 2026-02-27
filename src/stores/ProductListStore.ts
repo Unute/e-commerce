@@ -1,12 +1,16 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type { Product } from "@/types/product";
 import { getAllProducts } from "@/api/getAllProducts";
+import { getCategories } from "@/api/getCategories";
 import type { Option } from "@/components/UI/MultiDropdown";
+import type { RootStore } from "./RootStore";
 
 export class ProductListStore {
+  _rootStore: RootStore;
 
-  constructor() {
-    makeAutoObservable(this);
+  constructor(rootStore: RootStore) {
+    this._rootStore = rootStore;
+    makeAutoObservable(this, { _rootStore: false });
   }
 
   products: Product[] = [];
@@ -18,6 +22,7 @@ export class ProductListStore {
   currentPage: number = 1;
   pageSize: number = 9;
   pendingCategoryKeys: string[] = []; // ключи категорий из URL, ждут загрузки списка категорий
+  categoriesLoaded: boolean = false;  // флаг кэша — не запрашивать повторно
 
 
 
@@ -89,16 +94,12 @@ export class ProductListStore {
 
 
   async fetchCategories() {
+    if (this.categoriesLoaded) return;
     try {
-      const response = await getAllProducts({ pageSize: 1000 });
+      const data = await getCategories();
       runInAction(() => {
-        const unique = new Map<string, string>();
-        response.data.forEach((p) => {
-          if (p.productCategory) {
-            unique.set(p.productCategory.documentId, p.productCategory.title);
-          }
-        });
-        this.categories = Array.from(unique.entries()).map(([key, value]) => ({ key, value }));
+        this.categories = data.map((c) => ({ key: c.documentId, value: c.title }));
+        this.categoriesLoaded = true;
       });
     } catch (e) {
       runInAction(() => {
@@ -110,4 +111,3 @@ export class ProductListStore {
 
 
 
-export const productListStore = new ProductListStore();

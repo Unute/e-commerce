@@ -3,7 +3,7 @@ import Button from "@/components/UI/Button";
 import Input from "@/components/UI/Input";
 import MultiDropdown from "@/components/UI/MultiDropdown";
 import Text from "@/components/UI/Text";
-import { productListStore } from "@/stores/ProductListStore";
+import { useStore } from "@/stores/context";
 import { observer } from "mobx-react-lite";
 
 type FilterPanelProps = {
@@ -11,6 +11,7 @@ type FilterPanelProps = {
 };
 
 const FilterPanel = observer(({ total }: FilterPanelProps) => {
+  const { productListStore } = useStore();
   return (
     <div className={s.FilterPanel}>
       <div className={s.search}>

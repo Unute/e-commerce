@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import type { Product } from "@/types/product";
+import type { RootStore } from "./RootStore";
 
 export type CartItem = {
   product: Product;
@@ -9,10 +10,12 @@ export type CartItem = {
 const STORAGE_KEY = "cart";
 
 export class CartStore {
+  _rootStore: RootStore;
   items: CartItem[] = [];
 
-  constructor() {
-    makeAutoObservable(this);
+  constructor(rootStore: RootStore) {
+    this._rootStore = rootStore;
+    makeAutoObservable(this, { _rootStore: false });
     this._loadFromStorage();
   }
 
@@ -92,5 +95,3 @@ export class CartStore {
     }
   };
 }
-
-export const cartStore = new CartStore();

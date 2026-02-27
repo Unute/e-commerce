@@ -4,7 +4,7 @@ import s from "./ChangedProduct.module.scss";
 import Button from "@/components/UI/Button";
 import Text from "@/components/UI/Text";
 import type { Product } from "@/types/product";
-import { cartStore } from "@/stores/CartStore";
+import { useStore } from "@/stores/context";
 
 type ChangedProductProps = {
   product: Product;
@@ -12,6 +12,7 @@ type ChangedProductProps = {
 };
 
 const ChangedProduct: React.FC<ChangedProductProps> = observer(({ product, image }) => {
+  const { cartStore } = useStore();
   const inCart = cartStore.isInCart(product.documentId);
 
   return (

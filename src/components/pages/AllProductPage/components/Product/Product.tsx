@@ -5,12 +5,12 @@ import Pagination from "./components/Pagination";
 import type { ProductProps } from "./types";
 import Card from "@/components/UI/Card";
 import Loader from "@/components/UI/Loader";
-import { productListStore } from "@/stores/ProductListStore";
 import Button from "@/components/UI/Button";
-import { cartStore } from "@/stores/CartStore";
+import { useStore } from "@/stores/context";
 
 const Product: React.FC<ProductProps> = observer(({ products, loading }) => {
   const navigate = useNavigate();
+  const {cartStore, productListStore} = useStore();
 
   return (
     <>

@@ -5,8 +5,8 @@ import s from "./TextHeader.module.scss";
 
 const navItems = [
   { label: "Product", to: "/" },
-  { label: "Categories", to: null },
-  { label: "About us", to: null },
+  { label: "Categories", to: "categories" },
+  { label: "About us", to: "about-us" },
 ];
 
 const TextHeader = () => {
@@ -16,24 +16,14 @@ const TextHeader = () => {
     <nav>
       <ul className={s.navList}>
         {navItems.map((item, idx) =>
-          item.to ? (
-            <Link
-              key={item.label}
-              to={item.to}
-              className={`${s.navItem} ${active === idx ? s.active : ""}`}
-              onClick={() => setActive(idx)}
-            >
-              {item.label}
-            </Link>
-          ) : (
-            <li
-              key={item.label}
-              className={`${s.navItem} ${active === idx ? s.active : ""}`}
-              onClick={() => setActive(idx)}
-            >
-              {item.label}
-            </li>
-          ),
+          <Link
+            key={item.label}
+            to={item.to}
+            className={`${s.navItem} ${active === idx ? s.active : ""}`}
+            onClick={() => setActive(idx)}
+          >
+            {item.label}
+          </Link>
         )}
       </ul>
     </nav>

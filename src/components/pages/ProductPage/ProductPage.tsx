@@ -3,8 +3,7 @@ import { observer } from "mobx-react-lite";
 import s from "./ProductPage.module.scss";
 import ChangedProduct from "./components/ChangedProduct";
 import RelatedProducts from "./components/RelatedProducts";
-// import { useProductPage } from "./hook/useProductPage";
-import { productStore } from "@/stores/ProductStore";
+import { useStore } from "@/stores/context";
 import { useParams } from "react-router-dom";
 
 import Loader from "@/components/UI/Loader";
@@ -13,6 +12,7 @@ import { useEffect } from "react";
 const ProductPage = observer(() => {
   const navigate = useNavigate();
   const { documentId } = useParams<{ documentId: string }>();
+  const { productStore } = useStore();
 
   useEffect(() => {
     if (documentId) {
