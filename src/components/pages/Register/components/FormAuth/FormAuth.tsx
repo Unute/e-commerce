@@ -43,7 +43,7 @@ const FormAuth = observer(() => {
         }}>
           {formStore.isRegister ?
             'Register' :
-            'Login'
+            'Log in'
           }
         </Button>
         {authStore.error && <div className={s.error}>{authStore.error}</div>}

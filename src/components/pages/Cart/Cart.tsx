@@ -4,6 +4,7 @@ import { useStore } from "@/stores/context";
 import Button from "@/components/UI/Button";
 import Text from "@/components/UI/Text";
 import s from "./Cart.module.scss";
+import CartItem from "./components/CartItem";
 
 const Cart = observer(() => {
   const navigate = useNavigate();
@@ -17,6 +18,13 @@ const Cart = observer(() => {
         <Button onClick={() => navigate("/")}>Go to catalog</Button>
       </div>
     );
+  } else if (!authStore.isAuthenticated) {
+    return (
+      <div className={s.empty}>
+        <Text view="title">Log in to your account</Text>
+        <Button className={s.ButtonRegister} onClick={() => navigate("/register")}>Log in</Button>
+      </div>
+    )
   }
 
   return (
@@ -24,45 +32,7 @@ const Cart = observer(() => {
       <Text view="title" weight="bold" className={s.title}>
         Cart
       </Text>
-      <div className={s.items}>
-        {cartStore.items.map(({ product, quantity }) => (
-          <div key={product.documentId} className={s.item}>
-            <img
-              src={product.images[0].url}
-              alt={product.title}
-              className={s.image}
-            />
-            <div className={s.info}>
-              <Text weight="bold">{product.title}</Text>
-              <Text color="secondary">${product.price}</Text>
-            </div>
-            <div className={s.controls}>
-              <button
-                className={s.qty}
-                onClick={() => cartStore.decreaseQuantity(product.documentId)}
-              >
-                −
-              </button>
-              <Text>{quantity}</Text>
-              <button
-                className={s.qty}
-                onClick={() => cartStore.addToCart(product.id)}
-              >
-                +
-              </button>
-            </div>
-            <Text weight="bold" className={s.subtotal}>
-              ${product.price * quantity}
-            </Text>
-            <button
-              className={s.remove}
-              onClick={() => cartStore.removeFromCart(product.documentId)}
-            >
-              ✕
-            </button>
-          </div>
-        ))}
-      </div>
+      <CartItem />
       <div className={s.footer}>
         <Text view="p-20" weight="bold">
           Total: ${cartStore.totalPrice}

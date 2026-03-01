@@ -93,7 +93,7 @@ export class CartStore {
     }
   }
 
-  async clearCart() {
+  clearCart = async () => {
     if (this.items.length === 0) return;
     this.cartLoading = true;
     try {
