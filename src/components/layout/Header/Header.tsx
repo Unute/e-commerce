@@ -3,12 +3,10 @@ import { observer } from "mobx-react-lite";
 import s from "./Header.module.scss";
 import BurgerMenu from "./components/BurgerMenu/BurgerMenu";
 import TextHeader from "./components/TextHeader/TextHeader";
-import { useStore } from "@/stores/context";
+import CartHeader from "./components/CartHeader";
+import Profile from "./components/Profile/Profile";
 
 const Header = observer(() => {
-  const { cartStore } = useStore();
-  const { pathname } = useLocation();
-  const { authStore } = useStore();
 
   return (
     <header className={s.header}>
@@ -22,25 +20,12 @@ const Header = observer(() => {
       </div>
 
       <div className={s.icon}>
-        <Link to="/cart" className={`${s.cartLink} ${pathname === "/cart" ? s.active : ""}`}>
-          <img src="/svg/bag.svg" alt="Корзина" />
-          {cartStore.totalCount > 0 && (
-            <span className={s.badge}>{cartStore.totalCount}</span>
-          )}
-        </Link>
-
-        <Link to="/register" className={`${s.profileLink} ${pathname === "/register" ? s.active : ""}`}>
-          {
-            authStore.user?.username ? (
-              <span className={s.username}>{authStore.user.username}</span>
-            ) : (
-              <img src="/svg/user.svg" alt="Профиль" />
-            )
-          }
-        </Link>
+        <CartHeader />
+        <Profile />
       </div>
 
       <div className={s.burgerWrapper}>
+        <CartHeader />
         <BurgerMenu />
       </div>
     </header>
