@@ -1,18 +1,23 @@
 import axios from "axios";
 
-const API_TOKEN = import.meta.env.VITE_API_TOKEN;
-console.log("API_TOKEN", API_TOKEN);
-
-const baseHeaders = {
-  authorization: `${API_TOKEN}`,
-};
+// Читаем jwt при каждом запросе, а не один раз при загрузке модуля
+function authHeaders() {
+  const jwt = localStorage.getItem("jwt") || "";
+  return jwt ? { authorization: `Bearer ${jwt}` } : {};
+}
 
 export const api = axios.create({
   baseURL: "https://front-school-strapi.ktsdev.ru/api/products",
-  headers: baseHeaders,
 });
 
 export const apiCategories = axios.create({
   baseURL: "https://front-school-strapi.ktsdev.ru/api/product-categories",
-  headers: baseHeaders,
+});
+
+// Интерсептор подставляет актуальный токен перед каждым запросом
+[api, apiCategories].forEach((instance) => {
+  instance.interceptors.request.use((config) => {
+    Object.assign(config.headers, authHeaders());
+    return config;
+  });
 });

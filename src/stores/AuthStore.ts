@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { register, login } from "@/api/JWT/auth";
 
 const JWT_KEY = "jwt";
+const USER_KEY = "user"; // serialized user object
 
 export class AuthStore {
   jwt: string | null = null;
@@ -13,8 +14,10 @@ export class AuthStore {
   loading: boolean = false;
   error: string | null = null;
 
+
   constructor() {
     makeAutoObservable(this);
+    console.log(this.user)
   }
 
   get isAuthenticated() {
@@ -23,8 +26,16 @@ export class AuthStore {
 
   init() {
     const jwt = localStorage.getItem(JWT_KEY);
+    const userJson = localStorage.getItem(USER_KEY);
     if (jwt) {
       this.jwt = jwt;
+    }
+    if (userJson) {
+      try {
+        this.user = JSON.parse(userJson);
+      } catch {
+        this.user = null;
+      }
     }
   }
 
@@ -37,6 +48,7 @@ export class AuthStore {
         this.jwt = res.jwt;
         this.user = res.user;
         localStorage.setItem(JWT_KEY, res.jwt);
+        localStorage.setItem(USER_KEY, JSON.stringify(res.user));
       });
     } catch (e: any) {
       runInAction(() => {
@@ -58,6 +70,7 @@ export class AuthStore {
         this.jwt = res.jwt;
         this.user = res.user;
         localStorage.setItem(JWT_KEY, res.jwt);
+        localStorage.setItem(USER_KEY, JSON.stringify(res.user));
       });
     } catch (e: any) {
       runInAction(() => {
@@ -74,5 +87,6 @@ export class AuthStore {
     this.jwt = null;
     this.user = null;
     localStorage.removeItem(JWT_KEY);
+    localStorage.removeItem(USER_KEY);
   }
 }

@@ -11,9 +11,10 @@ export class RootStore {
 
 
   constructor() {
+    this.authStore = new AuthStore();
+    this.authStore.init();
     this.cartStore = new CartStore(this);
     this.productListStore = new ProductListStore(this);
     this.productStore = new ProductStore(this);
-    this.authStore = new AuthStore();
   }
 }

@@ -38,7 +38,7 @@ const ChangedProduct: React.FC<ChangedProductProps> = observer(({ product, image
           onClick={() =>
             inCart
               ? cartStore.removeFromCart(product.documentId)
-              : cartStore.addToCart(product)
+              : cartStore.addToCart(product.id)
           }
         >
           {inCart ? "Remove from Cart" : "Add to Cart"}

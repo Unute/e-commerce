@@ -1,23 +1,96 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type { Product } from "@/types/product";
 import type { RootStore } from "./RootStore";
+import { getCart, addToCart as apiAddToCart, removeFromCart as apiRemoveFromCart } from "@/api/CartApi";
 
 export type CartItem = {
   product: Product;
   quantity: number;
 };
 
-const STORAGE_KEY = "cart";
-
 export class CartStore {
   _rootStore: RootStore;
   items: CartItem[] = [];
+  cartLoading: boolean = false;
 
   constructor(rootStore: RootStore) {
     this._rootStore = rootStore;
     makeAutoObservable(this, { _rootStore: false });
-    this._loadFromStorage();
+    
+    reaction(
+      () => rootStore.authStore.jwt,
+      (jwt) => {
+        if (jwt) this.fetchCart();
+        else this.items = [];
+      },
+      { fireImmediately: true }
+    );
   }
+
+  // загрузить корзину с сервера
+  async fetchCart() {
+    this.cartLoading = true;
+    try {
+      const data = await getCart();
+      runInAction(() => {
+        this.items = data;
+      });
+    } catch {
+      runInAction(() => { this.items = []; });
+    } finally {
+      runInAction(() => { this.cartLoading = false; });
+    }
+  }
+
+  // добавить товар (через API)
+  async addToCart(productId: number, quantity = 1) {
+    this.cartLoading = true;
+    try {
+      await apiAddToCart(productId, quantity);
+      const cartItems = await getCart();
+      runInAction(() => {
+        this.items = cartItems;
+      });
+    } finally {
+      runInAction(() => { this.cartLoading = false; });
+    }
+  }
+
+  // удалить товар полностью (через API)
+  async removeFromCart(documentId: string) {
+    const item = this.items.find((i) => i.product.documentId === documentId);
+    if (!item) return;
+    this.cartLoading = true;
+    try {
+      await apiRemoveFromCart(item.product.id, item.quantity);
+      const cartItems = await getCart();
+      runInAction(() => {
+        this.items = cartItems;
+      });
+    } finally {
+      runInAction(() => { this.cartLoading = false; });
+    }
+  }
+
+  // уменьшить на 1 (через API)
+  async decreaseQuantity(documentId: string) {
+    const item = this.items.find((i) => i.product.documentId === documentId);
+    if (!item) return;
+    this.cartLoading = true;
+    try {
+      await apiRemoveFromCart(item.product.id, 1);
+      const cartItems = await getCart();
+      runInAction(() => {
+        this.items = Array.isArray(cartItems) ? cartItems : [];
+      });
+    } finally {
+      runInAction(() => { this.cartLoading = false; });
+    }
+  }
+
+  clearCart = () => {
+    this.items = [];
+  };
 
   // computed
   get totalCount(): number {
@@ -33,65 +106,5 @@ export class CartStore {
 
   isInCart = (documentId: string): boolean => {
     return this.items.some((item) => item.product.documentId === documentId);
-  };
-
-  // actions
-  addToCart = (product: Product) => {
-    const existing = this.items.find(
-      (item) => item.product.documentId === product.documentId
-    );
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      this.items.push({ product, quantity: 1 });
-    }
-    this._saveToStorage();
-  };
-
-  removeFromCart = (documentId: string) => {
-    this.items = this.items.filter(
-      (item) => item.product.documentId !== documentId
-    );
-    this._saveToStorage();
-  };
-
-  decreaseQuantity = (documentId: string) => {
-    const existing = this.items.find(
-      (item) => item.product.documentId === documentId
-    );
-    if (!existing) return;
-    if (existing.quantity <= 1) {
-      this.removeFromCart(documentId);
-    } else {
-      existing.quantity -= 1;
-      this._saveToStorage();
-    }
-  };
-
-  clearCart = () => {
-    this.items = [];
-    this._saveToStorage();
-  };
-
-  private _saveToStorage = () => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items));
-    } catch (error) {
-      throw new Error("Failed to save cart to localStorage: " + error);
-    }
-  };
-
-  private _loadFromStorage = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as CartItem[];
-        runInAction(() => {
-          this.items = parsed;
-        });
-      }
-    } catch (error) {
-      throw new Error("Failed to load cart from localStorage: " + error);
-    }
   };
 }

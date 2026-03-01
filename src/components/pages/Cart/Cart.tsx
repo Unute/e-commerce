@@ -45,7 +45,7 @@ const Cart = observer(() => {
               <Text>{quantity}</Text>
               <button
                 className={s.qty}
-                onClick={() => cartStore.addToCart(product)}
+                onClick={() => cartStore.addToCart(product.id)}
               >
                 +
               </button>

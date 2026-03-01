@@ -39,7 +39,7 @@ const Product: React.FC<ProductProps> = observer(({ products, loading }) => {
                         e.stopPropagation();
                         inCart
                           ? cartStore.removeFromCart(product.documentId)
-                          : cartStore.addToCart(product);
+                          : cartStore.addToCart(product.id, 1);
                       }}
                     >
                       {inCart ? "Remove" : "Add to Cart"}

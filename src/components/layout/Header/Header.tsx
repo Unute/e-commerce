@@ -8,6 +8,7 @@ import { useStore } from "@/stores/context";
 const Header = observer(() => {
   const { cartStore } = useStore();
   const { pathname } = useLocation();
+  const { authStore } = useStore();
 
   return (
     <header className={s.header}>
@@ -27,8 +28,15 @@ const Header = observer(() => {
             <span className={s.badge}>{cartStore.totalCount}</span>
           )}
         </Link>
+
         <Link to="/register" className={`${s.profileLink} ${pathname === "/register" ? s.active : ""}`}>
-          <img src="/svg/user.svg" alt="Профиль" />
+          {
+            authStore.user?.username ? (
+              <span className={s.username}>{authStore.user.username}</span>
+            ) : (
+              <img src="/svg/user.svg" alt="Профиль" />
+            )
+          }
         </Link>
       </div>
 

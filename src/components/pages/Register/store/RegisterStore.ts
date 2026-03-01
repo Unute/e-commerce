@@ -4,7 +4,7 @@ export class RegisterStore {
   email: string = "";
   password: string = "";
   username: string = "";
-  LoginMode: boolean = false;
+  isRegister: boolean = false; // true = showing registration form
 
   constructor() {
     makeAutoObservable(this);
@@ -22,9 +22,7 @@ export class RegisterStore {
     this.username = username;
   }
 
-  setLoginMode = (mode: boolean) => {
-    this.LoginMode = mode;
+  setIsRegister = (mode: boolean) => {
+    this.isRegister = mode;
   }
-
-
 }
