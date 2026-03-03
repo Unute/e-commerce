@@ -17,7 +17,6 @@ export class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
-    console.log(this.user)
   }
 
   get isAuthenticated() {

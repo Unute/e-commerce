@@ -2,8 +2,6 @@ import { makeAutoObservable, reaction, runInAction } from "mobx";
 import type { Product } from "@/types/product";
 import type { RootStore } from "./RootStore";
 import { getCart, addToCart, removeFromCart as apiRemoveFromCart } from "@/api/CartApi";
-import { toJS } from "mobx";
-
 
 export type CartItem = {
   product: Product;
@@ -41,8 +39,6 @@ export class CartStore {
       runInAction(() => { this.items = []; });
     } finally {
       runInAction(() => { this.cartLoading = false; });
-      console.log(toJS(this.items))
-
     }
 
   }
