@@ -1,4 +1,4 @@
-import { useLocation, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import s from "./TextHeader.module.scss";
 
@@ -9,8 +9,6 @@ const navItems = [
 ];
 
 const TextHeader = () => {
-  const { pathname } = useLocation();
-
   return (
     <nav>
       <ul className={s.navList}>
@@ -18,7 +16,7 @@ const TextHeader = () => {
           <NavLink
             key={item.label}
             to={item.to}
-            className={`${s.navItem} ${pathname === item.to ? s.active : ""}`}
+            className={({ isActive }) => `${s.navItem} ${isActive ? s.active : ""}`}
           >
             {item.label}
           </NavLink>

@@ -1,12 +1,14 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import s from "./../../Header.module.scss";
 import { useStore } from "@/stores/context";
 const Profile = observer(() => {
   const { authStore } = useStore();
-  const { pathname } = useLocation();
   return (
-    <NavLink to="/register" className={`${s.profileLink} ${pathname === "/register" ? s.active : ""}`}>
+    <NavLink
+      to="/register"
+      className={({ isActive }) => `${s.profileLink} ${isActive ? s.active : ""}`}
+    >
       {
         authStore.user?.username ? (
           <span className={s.username}>{authStore.user.username}</span>
