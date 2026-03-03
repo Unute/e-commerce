@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import s from "./Product.module.scss";
+import s from "./ProductList.module.scss";
 import Pagination from "./components/Pagination";
 import type { ProductProps } from "./types";
 import Card from "@/components/UI/Card";
@@ -8,7 +8,7 @@ import Loader from "@/components/UI/Loader";
 import Button from "@/components/UI/Button";
 import { useStore } from "@/stores/context";
 
-const Product: React.FC<ProductProps> = observer(({ products, loading }) => {
+const ProductList: React.FC<ProductProps> = observer(({ products, loading }) => {
   const navigate = useNavigate();
   const {cartStore, productListStore} = useStore();
 
@@ -60,4 +60,4 @@ const Product: React.FC<ProductProps> = observer(({ products, loading }) => {
   );
 });
 
-export default Product;
+export default ProductList;

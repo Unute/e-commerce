@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { useStore } from '@/stores/context'
 import Text from '@/components/UI/Text'
-import s from './CartItem.module.scss'
+import s from './CartList.module.scss'
 
 
-const CartItem = observer(() => {
+const CartList = observer(() => {
   const { cartStore } = useStore();
 
 
@@ -51,4 +51,4 @@ const CartItem = observer(() => {
   )
 })
 
-export default CartItem
+export default CartList

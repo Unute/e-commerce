@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import s from "./Header.module.scss";
 import BurgerMenu from "./components/BurgerMenu/BurgerMenu";
@@ -10,10 +10,10 @@ const Header = observer(() => {
 
   return (
     <header className={s.header}>
-      <Link to="/" className={s.logo}>
+      <NavLink to="/" className={s.logo}>
         <img src="/svg/logo.svg" alt="Логотип" />
         <img src="/svg/logo_text.svg" alt="Lalasia" />
-      </Link>
+      </NavLink>
 
       <div className={s.desktopNav}>
         <TextHeader />

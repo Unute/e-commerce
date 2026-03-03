@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { reaction } from "mobx";
 import FilterPanel from "./components/FilterPanel";
 import MainText from "./components/MainText/MainText";
-import Product from "./components/Product/Product";
+import ProductList from "./components/ProductList/ProductList";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/stores/context";
 
@@ -47,7 +47,7 @@ const AllProductPage = observer(() => {
     <>
       <MainText />
       <FilterPanel total={productListStore.total} />
-      <Product products={productListStore.products} loading={productListStore.loading} />
+      <ProductList products={productListStore.products} loading={productListStore.loading} />
     </>
   );
 });

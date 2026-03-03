@@ -1,6 +1,6 @@
 import qs from "qs";
 
-import { api } from "@/api/axiosInstance";
+import { apiProducts } from "@/api/axiosInstance";
 import type { Product } from "@/types/product";
 
 type ProductByIdResponse = {
@@ -9,7 +9,7 @@ type ProductByIdResponse = {
 
 export const getProductById = async (documentId: string): Promise<Product> => {
   const query = qs.stringify({ populate: ["images", "productCategory"] });
-  const response = await api.get<ProductByIdResponse>(
+  const response = await apiProducts.get<ProductByIdResponse>(
     `/${documentId}?${query}`,
   );
   return response.data.data;

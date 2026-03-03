@@ -1,13 +1,9 @@
 import axios from 'axios';
 import type { CartItem } from '../stores/CartStore';
 
-const STRAPI_BASE_URL = 'https://front-school-strapi.ktsdev.ru';
-const CART_URL = `${STRAPI_BASE_URL}/api/cart`;
+import { authHeaders } from './axiosInstance';
+const CART_URL = 'https://front-school-strapi.ktsdev.ru/api/cart';
 
-function authHeaders() {
-  const jwt = localStorage.getItem('jwt') || '';
-  return { Authorization: `Bearer ${jwt}` };
-}
 
 export type CartResponse = {
   data: CartItem[];

@@ -4,11 +4,11 @@ import s from "./FormAuth.module.scss";
 import { useStore } from "@/stores/context";
 import { observer } from "mobx-react-lite";
 import { RegisterStore } from "./../../store/RegisterStore";
-import { useRef } from "react";
+import { useLocalObservable } from "mobx-react-lite";
 
 const FormAuth = observer(() => {
   const { authStore } = useStore();
-  const formStore = useRef(new RegisterStore()).current
+  const formStore = useLocalObservable(() => new RegisterStore())
   return (
     <>
       <div className={s.form}>

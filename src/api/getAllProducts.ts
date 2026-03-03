@@ -1,5 +1,5 @@
 import qs from "qs";
-import { api } from "@/api/axiosInstance";
+import { apiProducts } from "@/api/axiosInstance";
 import type { ProductsResponse } from "@/types/product";
 
 type GetAllProductsParams = {
@@ -28,6 +28,6 @@ export const getAllProducts = async (params: GetAllProductsParams = {}): Promise
     };
   }
   const query = qs.stringify(queryObj);
-  const response = await api.get<ProductsResponse>(`?${query}`);
+  const response = await apiProducts.get<ProductsResponse>(`?${query}`);
   return response.data;
 };

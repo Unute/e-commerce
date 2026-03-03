@@ -4,7 +4,7 @@ import { useStore } from "@/stores/context";
 import Button from "@/components/UI/Button";
 import Text from "@/components/UI/Text";
 import s from "./Cart.module.scss";
-import CartItem from "./components/CartItem";
+import CartList from './components/CartList'
 
 const Cart = observer(() => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Cart = observer(() => {
       <Text view="title" weight="bold" className={s.title}>
         Cart
       </Text>
-      <CartItem />
+      <CartList />
       <div className={s.footer}>
         <Text view="p-20" weight="bold">
           Total: ${cartStore.totalPrice}

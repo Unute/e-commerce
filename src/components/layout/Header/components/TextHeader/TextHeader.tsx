@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 
 import s from "./TextHeader.module.scss";
 
@@ -15,13 +15,13 @@ const TextHeader = () => {
     <nav>
       <ul className={s.navList}>
         {navItems.map((item) =>
-          <Link
+          <NavLink
             key={item.label}
             to={item.to}
             className={`${s.navItem} ${pathname === item.to ? s.active : ""}`}
           >
             {item.label}
-          </Link>
+          </NavLink>
         )}
       </ul>
     </nav>

@@ -1,6 +1,6 @@
 import qs from "qs";
 
-import { api } from "@/api/axiosInstance";
+import { apiProducts } from "@/api/axiosInstance";
 import type { ProductsResponse } from "@/types/product";
 
 export const getProductsByCategory = async (
@@ -14,6 +14,6 @@ export const getProductsByCategory = async (
       },
     }),
   });
-  const response = await api.get<ProductsResponse>(`?${query}`);
+  const response = await apiProducts.get<ProductsResponse>(`?${query}`);
   return response.data;
 };
