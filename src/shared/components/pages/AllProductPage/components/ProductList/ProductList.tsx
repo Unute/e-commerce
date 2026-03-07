@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import s from "./ProductList.module.scss";
-import Pagination from "./components/Pagination";
+import Pagination from "./components/Pagination/Pagination";
 import type { ProductProps } from "./types";
 import Card from "@UI/Card";
 import Loader from "@UI/Loader";
 import Button from "@UI/Button";
 import { useStore } from "@stores/context";
 import { useProductListStore } from "../../context";
+import Product from "./components/Product/Product";
 
 const ProductList: React.FC<ProductProps> = observer(({ products, loading }) => {
   const router = useRouter();
@@ -40,49 +41,13 @@ const ProductList: React.FC<ProductProps> = observer(({ products, loading }) => 
                 ? (product.price * (1 - product.discountPercent / 100)).toFixed(2)
                 : null;
               return (
-                <Card
+                <Product
                   key={product.documentId}
+                  product={product}
                   image={image}
-                  captionSlot={
-                    <span className={s.caption}>
-                      {product.productCategory?.title}
-                      {product.rating != null && (
-                        <span className={s.rating}>⭐ {product.rating}</span>
-                      )}
-                    </span>
-                  }
-                  title={product.title}
-                  subtitle={product.description}
-                  contentSlot={
-                    <span className={s.price}>
-                      {discountedPrice ? (
-                        <>
-                          <span className={s.priceDiscounted}>${discountedPrice}</span>
-                          <span className={s.priceOriginal}>${product.price}</span>
-                          <span className={s.discountBadge}>-{product.discountPercent}%</span>
-                        </>
-                      ) : (
-                        <span>${product.price}</span>
-                      )}
-                    </span>
-                  }
-                  onClick={() => router.push(`/product/${product.documentId}`)}
-                  actionSlot={
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (inCart) {
-                          cartStore.removeFromCart(product.documentId);
-                          setToast(`Товар "${product.title}" удалён из корзины`);
-                        } else {
-                          cartStore.addToCart(product.id, 1);
-                          setToast(`Товар "${product.title}" добавлен в корзину`);
-                        }
-                      }}
-                    >
-                      {inCart ? "Remove" : "Add to Cart"}
-                    </Button>
-                  }
+                  discountedPrice={discountedPrice}
+                  inCart={inCart}
+                  setToast={setToast}
                 />
               );
             })}
