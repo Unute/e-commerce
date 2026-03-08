@@ -20,7 +20,10 @@ export class ProductListStore {
   pageSize: number = 9;
   pendingCategoryKeys: string[] = []; // ключи категорий из URL, ждут загрузки списка категорий
   categoriesLoaded: boolean = false;  // флаг кэша — не запрашивать повторно
-
+  sortField: "price" | "rating" | null = null;
+  sortOrder: "asc" | "desc" | null = null;
+  priceMin: string = "";
+  priceMax: string = "";
 
 
   //computed
@@ -30,6 +33,27 @@ export class ProductListStore {
   }
 
   //actions
+  setSort = (field: "price" | "rating", order: "asc" | "desc") => {
+    this.sortField = field;
+    this.sortOrder = order;
+    this.currentPage = 1;
+    this.fetchProducts();
+  }
+
+  setPriceMin = (value: string) => {
+    this.priceMin = value.replace(/[^0-9]/g, "");
+    this.currentPage = 1;
+    this.fetchProducts();
+  }
+
+  setPriceMax = (value: string) => {
+    this.priceMax = value.replace(/[^0-9]/g, "");
+    this.currentPage = 1;
+    this.fetchProducts();
+  }
+
+
+
   setSearch = (query: string) => {
     this.searchQuery = query;
     // Не сбрасываем страницу и не запускаем поиск при каждом символе
@@ -75,10 +99,12 @@ export class ProductListStore {
     try {
       const response = await getAllProducts({
         search: this.committedSearch,
-        // передаём массив key (documentId категории) для фильтрации
         categories: this.selectedCategories.map((o) => o.key),
         page: this.currentPage,
         pageSize: this.pageSize,
+        sort: this.sortField ? `${this.sortField}:${this.sortOrder}` : undefined,
+        priceMin: this.priceMin ? Number(this.priceMin) : undefined,
+        priceMax: this.priceMax ? Number(this.priceMax) : undefined,
       });
       runInAction(() => {
         this.products = response.data;

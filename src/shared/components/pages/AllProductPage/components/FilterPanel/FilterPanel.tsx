@@ -12,6 +12,7 @@ type FilterPanelProps = {
 
 const FilterPanel = observer(({ total }: FilterPanelProps) => {
   const productListStore = useProductListStore();
+  const sortOptions = ['price', 'rating'] as const
   return (
     <div className={s.FilterPanel}>
       <div className={s.search}>
@@ -23,24 +24,64 @@ const FilterPanel = observer(({ total }: FilterPanelProps) => {
         />
         <Button className={s.button} onClick={() => productListStore.submitSearch()}>Find now</Button>
       </div>
-      <MultiDropdown
-        options={productListStore.categories}
-        value={productListStore.selectedCategories}
-        onChange={productListStore.setCategories}
-        getTitle={(selected) =>
-          selected.length === 0
-            ? "Filter"
-            : selected.map((o) => o.value).join(", ")
-        }
-        className={s.dropdown}
-      />
+      <div className={s.filterOption}>
+
+        <MultiDropdown
+          options={productListStore.categories}
+          value={productListStore.selectedCategories}
+          onChange={productListStore.setCategories}
+          getTitle={(selected) =>
+            selected.length === 0
+              ? "Filter"
+              : selected.map((o) => o.value).join(", ")
+          }
+          className={s.dropdown}
+        />
+
+        <div className={s.priceRange}>
+          <Input
+            className={s.priceInput}
+            value={productListStore.priceMin}
+            onChange={productListStore.setPriceMin}
+            placeholder="Price from"
+          />
+          <Input
+            className={s.priceInput}
+            value={productListStore.priceMax}
+            onChange={productListStore.setPriceMax}
+            placeholder="Price to"
+          />
+        </div>
+
+        
+        <div className={s.sort}>
+          {sortOptions.map((field) => {
+            const isActive = productListStore.sortField === field;
+            const order = isActive ? productListStore.sortOrder : null;
+            return (
+              <Button
+                key={field}
+                onClick={() => {
+                  const nextOrder = isActive && order === 'asc' ? 'desc' : 'asc';
+                  productListStore.setSort(field, nextOrder);
+                }}
+              >
+                {field === 'price' ? 'Price' : 'Rating'
+                }
+                {isActive ? (order === 'asc' ? ' ↑' : ' ↓') : ''}
+
+              </Button>
+            );
+          })}
+        </div >
+      </div>
       <div className={s.text}>
         <Text className={s.totalProducts}>Total products</Text>
         <Text color="accent" className={s.total}>
           {total ?? "—"}
         </Text>
       </div>
-    </div>
+    </div >
   );
 });
 

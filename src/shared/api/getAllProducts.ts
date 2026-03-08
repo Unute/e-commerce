@@ -8,10 +8,13 @@ type GetAllProductsParams = {
   categories?: string[];
   page?: number;
   pageSize?: number;
+  sort?: string;
+  priceMin?: number;
+  priceMax?: number;
 };
 
 export const getAllProducts = async (params: GetAllProductsParams = {}): Promise<ProductsResponse> => {
-  const { search, categories, page = 1, pageSize = 9 } = params;
+  const { search, categories, page = 1, pageSize = 9, sort, priceMax, priceMin } = params;
   const queryObj: any = {
     populate: ["images", "productCategory"],
     pagination: { page, pageSize },
@@ -26,6 +29,21 @@ export const getAllProducts = async (params: GetAllProductsParams = {}): Promise
     queryObj.filters = {
       ...queryObj.filters,
       productCategory: { documentId: { $in: categories } },
+    };
+  }
+  if (sort) {
+    queryObj.sort = [sort];
+  }
+  if (priceMin !== undefined) {
+    queryObj.filters = {
+      ...queryObj.filters,
+      price: { ...queryObj.filters?.price, $gte: priceMin },
+    };
+  }
+  if (priceMax !== undefined) {
+    queryObj.filters = {
+      ...queryObj.filters,
+      price: { ...queryObj.filters?.price, $lte: priceMax },
     };
   }
   const query = qs.stringify(queryObj);
