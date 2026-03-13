@@ -2,8 +2,9 @@
 import { useState } from "react";
 
 import TextHeader from "../TextHeader/TextHeader";
-
+import CartHeader from "../CartHeader/CartHeader";
 import s from "./BurgerMenu.module.scss";
+import Profile from "../Profile/Profile";
 
 const BurgerMenu = () => {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,11 @@ const BurgerMenu = () => {
 
       {open && (
         <div className={s.dropdown}>
-          <TextHeader />
+          <TextHeader onClose={() => setOpen(false)} />
+          <div className={s.actions}>
+            <CartHeader showLabel onClose={() => setOpen(false)} />
+            <Profile showLabel onClose={() => setOpen(false)} />
+          </div>
         </div>
       )}
     </>

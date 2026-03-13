@@ -14,6 +14,13 @@
   padding: 16px;
   border: 1px solid #f3f3f3;
   border-radius: 12px;
+
+  @include respond(sm) {
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    gap: 12px;
+  }
 }
 
 .image {
@@ -22,6 +29,12 @@
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0;
+
+  @include respond(sm) {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+  }
 }
 
 .info {
@@ -58,6 +71,11 @@
 .subtotal {
   min-width: 64px;
   text-align: right;
+
+  @include respond(sm) {
+    text-align: left;
+    min-width: unset;
+  }
 }
 
 .remove {
@@ -70,5 +88,18 @@
 
   &:hover {
     color: #333;
+  }
+
+  @include respond(sm) {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

@@ -20,4 +20,7 @@
 
 .block__option {
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
+  position: absolute;
+  max-width: 18.75rem;
+  width: 100%;
 }

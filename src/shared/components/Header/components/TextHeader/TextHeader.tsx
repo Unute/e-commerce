@@ -11,7 +11,11 @@ const navItems = [
   { label: "About us", to: "/about-us" },
 ];
 
-const TextHeader = () => {
+type TextHeaderProps = {
+  onClose?: () => void;
+};
+
+const TextHeader = ({ onClose }: TextHeaderProps) => {
   const pathname = usePathname();
 
   return (
@@ -24,6 +28,7 @@ const TextHeader = () => {
               key={item.label}
               href={item.to}
               className={`${s.navItem} ${isActive ? s.active : ""}`}
+              onClick={onClose}
             >
               {item.label}
             </Link>
