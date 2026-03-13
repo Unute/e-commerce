@@ -1,9 +1,9 @@
 'use client';
 
-// import { NavLink } from "react-router-dom";
 import Link from "next/link";
+import s from "./Profile.module.scss";
 import { observer } from "mobx-react-lite";
-import s from "./../../Header.module.scss";
+// import s from "./../../Header.module.scss";
 import { useStore } from "@stores/context";
 const Profile = observer(() => {
   const { authStore } = useStore();
