@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { Product } from '@/shared/types/product';
 import s from './BuyModal.module.scss';
 
@@ -13,6 +14,7 @@ type BuyModalProps = {
 
 const BuyModal: React.FC<BuyModalProps> = ({ product, discountedPrice, onClose, onConfirm }) => {
   const [qty, setQty] = useState(1);
+  const t = useTranslations('buyModal');
 
   const unitPrice = discountedPrice ? parseFloat(discountedPrice) : product.price;
   const total = (unitPrice * qty).toFixed(2);
@@ -20,11 +22,11 @@ const BuyModal: React.FC<BuyModalProps> = ({ product, discountedPrice, onClose, 
   return (
     <div className={s.overlay} onClick={onClose}>
       <div className={s.modal} onClick={(e) => e.stopPropagation()}>
-        <p className={s.title}>Оформление заказа</p>
+        <p className={s.title}>{t('title')}</p>
         <p className={s.productName}>{product.title}</p>
 
         <div className={s.row}>
-          <span className={s.label}>Количество:</span>
+          <span className={s.label}>{t('quantity')}</span>
           <span className={s.counter}>
             <div
               className={`${s.counterBtn} ${qty <= 1 ? s.disabled : ''}`}
@@ -40,16 +42,16 @@ const BuyModal: React.FC<BuyModalProps> = ({ product, discountedPrice, onClose, 
         </div>
 
         <div className={s.row}>
-          <span className={s.label}>Итого:</span>
+          <span className={s.label}>{t('total')}</span>
           <span className={s.total}>${total}</span>
         </div>
 
         <div className={s.actions}>
           <button className={s.btnCancel} onClick={onClose}>
-            Отмена
+            {t('cancel')}
           </button>
           <button className={s.btnConfirm} onClick={() => onConfirm(qty)}>
-            Купить
+            {t('buy')}
           </button>
         </div>
       </div>

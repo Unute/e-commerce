@@ -1,13 +1,15 @@
+'use client';
+
 import s from "./MainText.module.scss";
+import { useTranslations } from "next-intl";
 
 const MainText = () => {
+  const t = useTranslations();
+
   return (
     <div className={s.mainText}>
-      <div className={s.title}>Product</div>
-      <div className={s.description}>
-        We display products based on the latest products we have, if you want to
-        see our old products please enter the name of the item
-      </div>
+      <div className={s.title}>{t('mainText.title')}</div>
+      <div className={s.description}>{t('mainText.description')}</div>
     </div>
   );
 };

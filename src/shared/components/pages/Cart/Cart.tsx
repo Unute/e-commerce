@@ -9,12 +9,14 @@ import Text from "@UI/Text";
 import s from "./Cart.module.scss";
 import CartList from './components/CartList';
 import PurchaseModal from './components/PurchaseModal/PurchaseModal';
+import { useTranslations } from "next-intl";
 
 const Cart = observer(() => {
   const router = useRouter();
   const { cartStore, authStore, purchaseStore } = useStore();
   const [toast, setToast] = useState<string | null>(null);
   const [purchaseTarget, setPurchaseTarget] = useState<'all' | string | null>(null);
+  const t = useTranslations();
 
   useEffect(() => {
     if (!toast) return;
@@ -26,12 +28,12 @@ const Cart = observer(() => {
     if (!purchaseTarget) return;
     if (purchaseTarget === 'all') {
       purchaseStore.recordPurchase([...cartStore.items]);
-      setToast('Successfully purchased all items!');
+      setToast(t('cart.purchasedAll'));
       await cartStore.clearCart();
     } else {
       const item = cartStore.items.find((i) => i.product.documentId === purchaseTarget);
       if (item) purchaseStore.recordPurchase([item]);
-      setToast(`Successfully purchased "${item?.product.title}"!`);
+      setToast(t('cart.purchasedItem', { title: item?.product.title ?? '' }));
       await cartStore.removeFromCart(purchaseTarget);
     }
     setPurchaseTarget(null);
@@ -40,8 +42,8 @@ const Cart = observer(() => {
   if (!authStore.isAuthenticated) {
     return (
       <div className={s.empty}>
-        <Text view="title">Log in to your account</Text>
-        <Button className={s.ButtonRegister} onClick={() => router.push("/register")}>Log in</Button>
+        <Text view="title">{t('cart.login')}</Text>
+        <Button className={s.ButtonRegister} onClick={() => router.push("/register")}>{t('cart.loginBtn')}</Button>
       </div>
     )
   }
@@ -51,8 +53,8 @@ const Cart = observer(() => {
       <>
         {toast && <div className={s.toast}>{toast}</div>}
         <div className={s.empty}>
-          <Text view="title">Your cart is empty</Text>
-          <Button onClick={() => router.push("/")}>Go to catalog</Button>
+          <Text view="title">{t('cart.empty')}</Text>
+          <Button onClick={() => router.push("/")}>{t('cart.goToCatalog')}</Button>
         </div>
       </>
     );
@@ -68,16 +70,16 @@ const Cart = observer(() => {
         />
       )}
       <Text view="title" weight="bold" className={s.title}>
-        Cart
+        {t('cart.title')}
       </Text>
       <CartList onBuyOne={(documentId) => setPurchaseTarget(documentId)} />
       <div className={s.footer}>
         <Text view="p-20" weight="bold">
-          Total: ${cartStore.totalPrice}
+          {t('cart.total')}: ${cartStore.totalPrice}
         </Text>
         <div className={s.footerActions}>
-          <Button onClick={cartStore.clearCart}>Clear cart</Button>
-          <Button onClick={() => setPurchaseTarget('all')}>Buy All</Button>
+          <Button onClick={cartStore.clearCart}>{t('cart.clearCart')}</Button>
+          <Button onClick={() => setPurchaseTarget('all')}>{t('cart.buyAll')}</Button>
         </div>
       </div>
     </div>

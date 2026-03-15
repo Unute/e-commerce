@@ -9,6 +9,7 @@ import { useStore } from "@stores/context";
 import Quantity from "@ProductComponents/Quantity/Quantity";
 import Price from "@ProductComponents/Price/Price";
 import ChangedProductImage from "./components/ChangedProductImage/ChangedProductImage";
+import { useTranslations } from "next-intl";
 
 
 type ChangedProductProps = {
@@ -19,6 +20,7 @@ type ChangedProductProps = {
 const ChangedProduct: React.FC<ChangedProductProps> = observer(({ product, image }) => {
   const { cartStore, authStore } = useStore();
   const router = useRouter();
+  const t = useTranslations();
   const inCart = cartStore.isInCart(product.documentId);
   const [toast, setToast] = useState<string | null>(null);
   const discountedPrice = product.discountPercent
@@ -37,7 +39,7 @@ const ChangedProduct: React.FC<ChangedProductProps> = observer(({ product, image
       return;
     }
     cartStore.addToCart(product);
-    setToast(`Товар "${product.title}" добавлен в корзину`);
+    setToast(t('product.addedToCart', { title: product.title }));
   };
 
   return (
@@ -70,7 +72,7 @@ const ChangedProduct: React.FC<ChangedProductProps> = observer(({ product, image
           <Quantity product={product} cartStore={cartStore} setToast={setToast} />
         ) : (
           <Button className={s.button_cart} onClick={handleAddToCart}>
-            Add to Cart
+            {t('product.addToCart')}
           </Button>
         )}
       </div>

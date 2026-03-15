@@ -6,6 +6,7 @@ import Text from "@UI/Text";
 import { useProductListStore } from "../../context";
 import { observer } from "mobx-react-lite";
 import { useDebouncedCallback } from "use-debounce";
+import { useTranslations } from "next-intl";
 
 type FilterPanelProps = {
   total?: number;
@@ -14,6 +15,7 @@ type FilterPanelProps = {
 const FilterPanel = observer(({ total }: FilterPanelProps) => {
   const productListStore = useProductListStore();
   const sortOptions = ['price', 'rating'] as const;
+  const t = useTranslations();
 
   const debouncedSubmit = useDebouncedCallback(
     () => productListStore.submitSearch(),
@@ -30,7 +32,7 @@ const FilterPanel = observer(({ total }: FilterPanelProps) => {
             productListStore.setSearch(value);
             debouncedSubmit();
           }}
-          placeholder="Search product"
+          placeholder={t('filter.search')}
         />
         {productListStore.searchQuery && (
           <Button
@@ -53,7 +55,7 @@ const FilterPanel = observer(({ total }: FilterPanelProps) => {
           onChange={productListStore.setCategories}
           getTitle={(selected) =>
             selected.length === 0
-              ? "Filter"
+              ? t('filter.filter')
               : selected.map((o) => o.value).join(", ")
           }
           className={s.dropdown}
@@ -64,17 +66,17 @@ const FilterPanel = observer(({ total }: FilterPanelProps) => {
             className={s.priceInput}
             value={productListStore.priceMin}
             onChange={productListStore.setPriceMin}
-            placeholder="Price from"
+            placeholder={t('filter.priceFrom')}
           />
           <Input
             className={s.priceInput}
             value={productListStore.priceMax}
             onChange={productListStore.setPriceMax}
-            placeholder="Price to"
+            placeholder={t('filter.priceTo')}
           />
         </div>
 
-        
+
         <div className={s.sort}>
           {sortOptions.map((field) => {
             const isActive = productListStore.sortField === field;
@@ -87,8 +89,7 @@ const FilterPanel = observer(({ total }: FilterPanelProps) => {
                   productListStore.setSort(field, nextOrder);
                 }}
               >
-                {field === 'price' ? 'Price' : 'Rating'
-                }
+                {field === 'price' ? t('filter.price') : t('filter.rating')}
                 {isActive ? (order === 'asc' ? ' ↑' : ' ↓') : ''}
 
               </Button>
@@ -97,7 +98,7 @@ const FilterPanel = observer(({ total }: FilterPanelProps) => {
         </div >
       </div>
       <div className={s.text}>
-        <Text className={s.totalProducts}>Total products</Text>
+        <Text className={s.totalProducts}>{t('filter.totalProducts')}</Text>
         <Text color="accent" className={s.total}>
           {total ?? "—"}
         </Text>

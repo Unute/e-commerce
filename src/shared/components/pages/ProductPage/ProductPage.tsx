@@ -10,6 +10,7 @@ import { RelatedCountStore } from "./store/RelatedCountStore";
 import { ProductStore } from "@stores/ProductStore";
 import type { Product } from "@/shared/types/product";
 import Loader from "@UI/Loader";
+import { useTranslations } from "next-intl";
 
 type ProductPageProps = {
   initialProduct?: Product | null;
@@ -20,6 +21,7 @@ const ProductPage = observer(({ initialProduct, initialRelatedProducts }: Produc
   const router = useRouter();
   const params = useParams();
   const documentId = params.documentId as string;
+  const t = useTranslations();
   const productStore = useLocalObservable(() => {
     const store = new ProductStore();
     if (initialProduct) {
@@ -56,14 +58,14 @@ const ProductPage = observer(({ initialProduct, initialRelatedProducts }: Produc
   }
 
   if (!product) {
-    return <div className={s.notFound}>Товар не найден</div>;
+    return <div className={s.notFound}>{t('product.notFound')}</div>;
   }
 
   const image = product.images || [""];
   return (
     <div className={s.page}>
       <button className={s.back} onClick={() => router.back()}>
-        ← Назад
+        {t('product.back')}
       </button>
       <ChangedProduct product={product} image={image} />
       <RelatedProducts

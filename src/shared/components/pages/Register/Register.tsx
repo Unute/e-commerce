@@ -6,11 +6,13 @@ import s from "./Register.module.scss";
 import FormAuth from "./components/FormAuth";
 import Button from "@UI/Button";
 import Text from "@UI/Text";
+import { useTranslations } from "next-intl";
 
 
 const Register = observer(() => {
 
   const { authStore, purchaseStore } = useStore();
+  const t = useTranslations();
 
 
   return (
@@ -24,14 +26,14 @@ const Register = observer(() => {
           <div className={s.stats}>
             <div className={s.stat}>
               <Text view="p-20" weight="bold">{purchaseStore.totalItems}</Text>
-              <Text view="p-14" color="secondary">items purchased</Text>
+              <Text view="p-14" color="secondary">{t('profile.itemsPurchased')}</Text>
             </div>
             <div className={s.stat}>
               <Text view="p-20" weight="bold">${purchaseStore.totalSpent}</Text>
-              <Text view="p-14" color="secondary">total spent</Text>
+              <Text view="p-14" color="secondary">{t('profile.totalSpent')}</Text>
             </div>
           </div>
-          <Button onClick={() => authStore.logout()}>LogOut</Button>
+          <Button onClick={() => authStore.logout()}>{t('profile.logout')}</Button>
         </div>
       ) : (
         <FormAuth />

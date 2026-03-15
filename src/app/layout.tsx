@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Header from "@/shared/components/Header";
 import { RootStoreProvider } from "@stores/context";
+import I18nProvider from "@/shared/i18n/I18nProvider";
 import "@/shared/styles/style.scss";
 
 const roboto = localFont({
@@ -29,10 +30,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <RootStoreProvider>
-          <div className="App">
-            <Header />
-            {children}
-          </div>
+          <I18nProvider>
+            <div className="App">
+              <Header />
+              {children}
+            </div>
+          </I18nProvider>
         </RootStoreProvider>
       </body>
     </html>

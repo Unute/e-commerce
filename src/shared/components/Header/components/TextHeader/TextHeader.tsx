@@ -2,14 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-
+import { useTranslations } from "next-intl";
 import s from "./TextHeader.module.scss";
-
-const navItems = [
-  { label: "Products", to: "/" },
-  { label: "Categories", to: "/categories" },
-  { label: "About us", to: "/about-us" },
-];
 
 type TextHeaderProps = {
   onClose?: () => void;
@@ -17,6 +11,13 @@ type TextHeaderProps = {
 
 const TextHeader = ({ onClose }: TextHeaderProps) => {
   const pathname = usePathname();
+  const t = useTranslations();
+
+  const navItems = [
+    { label: t('nav.products'), to: "/" },
+    { label: t('nav.categories'), to: "/categories" },
+    { label: t('nav.aboutUs'), to: "/about-us" },
+  ];
 
   return (
     <nav>
@@ -25,7 +26,7 @@ const TextHeader = ({ onClose }: TextHeaderProps) => {
           const isActive = pathname === item.to;
           return (
             <Link
-              key={item.label}
+              key={item.to}
               href={item.to}
               className={`${s.navItem} ${isActive ? s.active : ""}`}
               onClick={onClose}

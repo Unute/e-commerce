@@ -8,6 +8,7 @@ import TextHeader from "./components/TextHeader/TextHeader";
 import CartHeader from "./components/CartHeader";
 import Profile from "./components/Profile/Profile";
 import ThemeToggle from "./components/ThemeToggle/ThemeToggle";
+import LanguageToggle from "./components/LanguageToggle/LanguageToggle";
 
 const Header = observer(() => {
 
@@ -23,6 +24,7 @@ const Header = observer(() => {
       </div>
 
       <div className={s.icon}>
+        <LanguageToggle />
         <ThemeToggle />
         <CartHeader />
         <Profile />

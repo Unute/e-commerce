@@ -5,6 +5,7 @@ import Input from '@UI/Input';
 import Button from '@UI/Button';
 import Text from '@UI/Text';
 import s from './PurchaseModal.module.scss';
+import { useTranslations } from 'next-intl';
 
 type PurchaseModalProps = {
   onConfirm: () => void;
@@ -39,17 +40,18 @@ const PurchaseModal = ({ onConfirm, onCancel }: PurchaseModalProps) => {
     cvv: '',
   });
   const [errors, setErrors] = useState<Partial<FormState>>({});
+  const t = useTranslations();
 
   const set = (field: keyof FormState) => (value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));
 
   const validate = (): boolean => {
     const newErrors: Partial<FormState> = {};
-    if (!form.name.trim()) newErrors.name = 'Enter your name';
-    if (!form.address.trim()) newErrors.address = 'Enter your address';
-    if (form.cardNumber.replace(/\s/g, '').length < 16) newErrors.cardNumber = 'Enter a valid card number';
-    if (form.expiry.length < 5) newErrors.expiry = 'Enter expiry MM/YY';
-    if (form.cvv.length < 3) newErrors.cvv = 'Enter CVV';
+    if (!form.name.trim()) newErrors.name = t('checkout.errors.name');
+    if (!form.address.trim()) newErrors.address = t('checkout.errors.address');
+    if (form.cardNumber.replace(/\s/g, '').length < 16) newErrors.cardNumber = t('checkout.errors.card');
+    if (form.expiry.length < 5) newErrors.expiry = t('checkout.errors.expiry');
+    if (form.cvv.length < 3) newErrors.cvv = t('checkout.errors.cvv');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -62,31 +64,31 @@ const PurchaseModal = ({ onConfirm, onCancel }: PurchaseModalProps) => {
     <div className={s.overlay} onClick={onCancel}>
       <div className={s.modal} onClick={(e) => e.stopPropagation()}>
         <Text view="p-20" weight="bold" className={s.title}>
-          Checkout
+          {t('checkout.title')}
         </Text>
 
         <div className={s.field}>
-          <label className={s.label}>Full name</label>
+          <label className={s.label}>{t('checkout.fullName')}</label>
           <Input
             value={form.name}
             onChange={set('name')}
-            placeholder="John Doe"
+            placeholder={t('checkout.namePlaceholder')}
           />
           {errors.name && <span className={s.error}>{errors.name}</span>}
         </div>
 
         <div className={s.field}>
-          <label className={s.label}>Delivery address</label>
+          <label className={s.label}>{t('checkout.address')}</label>
           <Input
             value={form.address}
             onChange={set('address')}
-            placeholder="123 Main St, City"
+            placeholder={t('checkout.addressPlaceholder')}
           />
           {errors.address && <span className={s.error}>{errors.address}</span>}
         </div>
 
         <div className={s.field}>
-          <label className={s.label}>Card number</label>
+          <label className={s.label}>{t('checkout.cardNumber')}</label>
           <Input
             value={form.cardNumber}
             onChange={(v) => set('cardNumber')(formatCardNumber(v))}
@@ -97,16 +99,16 @@ const PurchaseModal = ({ onConfirm, onCancel }: PurchaseModalProps) => {
 
         <div className={s.row}>
           <div className={s.field}>
-            <label className={s.label}>Expiry</label>
+            <label className={s.label}>{t('checkout.expiry')}</label>
             <Input
               value={form.expiry}
               onChange={(v) => set('expiry')(formatExpiry(v))}
-              placeholder="MM/YY"
+              placeholder={t('checkout.expiryPlaceholder')}
             />
             {errors.expiry && <span className={s.error}>{errors.expiry}</span>}
           </div>
           <div className={s.field}>
-            <label className={s.label}>CVV</label>
+            <label className={s.label}>{t('checkout.cvv')}</label>
             <Input
               value={form.cvv}
               onChange={(v) => set('cvv')(v.replace(/\D/g, '').slice(0, 3))}
@@ -117,8 +119,8 @@ const PurchaseModal = ({ onConfirm, onCancel }: PurchaseModalProps) => {
         </div>
 
         <div className={s.actions}>
-          <Button onClick={onCancel}>Cancel</Button>
-          <Button onClick={handleSubmit}>Confirm purchase</Button>
+          <Button onClick={onCancel}>{t('checkout.cancel')}</Button>
+          <Button onClick={handleSubmit}>{t('checkout.confirm')}</Button>
         </div>
       </div>
     </div>

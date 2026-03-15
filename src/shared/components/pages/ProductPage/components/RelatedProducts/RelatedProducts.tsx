@@ -1,9 +1,12 @@
+'use client';
+
 import s from "./RelatedProducts.module.scss";
 import Button from "@UI/Button";
 import Card from "@UI/Card";
 import Loader from "@UI/Loader";
 import type { Product } from "@/shared/types/product";
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 
 
 type RelatedProductsProps = {
@@ -16,11 +19,11 @@ type RelatedProductsProps = {
 
 const RelatedProducts: React.FC<RelatedProductsProps> = observer(
   ({relatedProducts, navigate, isLoading, countRelated, countRelatedIncrement}) => {
-
+  const t = useTranslations();
 
   return (
     <div>
-      <h2 className={s.title}>Related Products</h2>
+      <h2 className={s.title}>{t('product.related')}</h2>
       <div className={s.related}>
         {isLoading ? (
           <Loader size="l" />
@@ -42,7 +45,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = observer(
         )}
       </div>
 
-      <Button onClick={countRelatedIncrement} className={s.button}>More</Button>
+      <Button onClick={countRelatedIncrement} className={s.button}>{t('product.more')}</Button>
     </div>
   );
 });

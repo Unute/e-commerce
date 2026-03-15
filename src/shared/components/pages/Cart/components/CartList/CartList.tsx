@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useStore } from '@stores/context'
 import Text from '@UI/Text'
 import s from './CartList.module.scss'
+import { useTranslations } from 'next-intl'
 
 type CartListProps = {
   onBuyOne: (documentId: string) => void;
@@ -11,6 +12,7 @@ type CartListProps = {
 
 const CartList = observer(({ onBuyOne }: CartListProps) => {
   const { cartStore } = useStore();
+  const t = useTranslations();
 
   return (
     <div className={s.items}>
@@ -47,7 +49,7 @@ const CartList = observer(({ onBuyOne }: CartListProps) => {
             className={s.buy}
             onClick={() => onBuyOne(product.documentId)}
           >
-            Buy
+            {t('cart.buy')}
           </button>
           <button
             className={s.remove}
