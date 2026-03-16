@@ -1,109 +1,232 @@
 @use '@styles/mixins' as *;
 
-.aboutUsContainer {
-  max-width: 700px;
+.page {
+  max-width: 900px;
   margin: 40px auto;
-  padding: 32px;
-  background: var(--bg-surface);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-
-  @include respond(sm) {
-    max-width: 100%;
-    margin: 16px auto;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  }
+  padding: 0 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
 
   @include respond(md) {
     max-width: 95vw;
-    padding: 20px;
+    padding: 0 16px 32px;
+    gap: 32px;
+  }
+
+  @include respond(sm) {
+    margin: 16px auto;
+    padding: 0 12px 24px;
+    gap: 24px;
+  }
+}
+
+// ── Hero ────────────────────────────────────────────────
+
+.hero {
+  background: linear-gradient(135deg, #518581 0%, #AD7E5C 60%, #A6D8D1 100%);
+  border-radius: 20px;
+  padding: 56px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    background-size: 200% auto;
+    animation: shimmer 4s linear infinite;
+  }
+
+  @include respond(md) {
+    padding: 36px 28px;
+    border-radius: 14px;
+  }
+
+  @include respond(sm) {
+    padding: 28px 20px;
     border-radius: 12px;
   }
 }
 
-.title {
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin-bottom: 18px;
-  color: var(--text-primary);
-
-  @include respond(sm) {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-  }
-
-  @include respond(md) {
-    font-size: 1.7rem;
-    margin-bottom: 14px;
-  }
+.heroInner {
+  position: relative;
+  z-index: 1;
 }
 
-.text {
-  font-size: 1.1rem;
-  color: var(--text-primary);
-  margin-bottom: 24px;
-
-  @include respond(sm) {
-    font-size: 0.95rem;
-    margin-bottom: 14px;
-  }
-
-  @include respond(md) {
-    font-size: 1rem;
-    margin-bottom: 18px;
-  }
-}
-
-.infoBlock {
-  background: var(--bg-elevated);
-  border-radius: 12px;
-  padding: 18px 24px;
-
-  @include respond(sm) {
-    border-radius: 6px;
-    padding: 10px 8px;
-  }
-
-  @include respond(md) {
-    border-radius: 10px;
-    padding: 14px 16px;
-  }
-}
-
-.subtitle {
-  font-size: 1.3rem;
+.badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--text-primary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
 
-  @include respond(sm) {
-    font-size: 1rem;
-    margin-bottom: 7px;
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+
+  @include respond(md) { font-size: 2.2rem; }
+  @include respond(sm) { font-size: 1.7rem; }
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.88);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+
+  @include respond(sm) { font-size: 0.95rem; }
+}
+
+// ── Sections ──────────────────────────────────────────
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: 12px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #AD7E5C, #518581);
   }
 
-  @include respond(md) {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
+  @include respond(sm) { font-size: 1.2rem; }
+}
+
+// ── Feature cards ──────────────────────────────────────
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @include respond(md) { grid-template-columns: repeat(2, 1fr); }
+  @include respond(sm) { grid-template-columns: 1fr; }
+}
+
+.featureCard {
+  background: var(--bg-surface);
+  border-radius: 14px;
+  padding: 24px 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid var(--border-color);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent 20%, rgba(173,126,92,0.1) 50%, transparent 80%);
+    transition: left 0.5s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(173,126,92,0.15);
+
+    &::after { left: 150%; }
   }
 }
 
-.list {
-  padding-left: 22px;
-  color: var(--text-secondary);
+.featureIcon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.featureTitle {
   font-size: 1rem;
-  line-height: 1.7;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
 
-  @include respond(sm) {
-    font-size: 0.9rem;
-    padding-left: 12px;
-    line-height: 1.5;
-  }
+.featureDesc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
 
-  @include respond(md) {
-    font-size: 0.95rem;
-    padding-left: 16px;
-    line-height: 1.6;
-  }
+// ── Stack ──────────────────────────────────────────────
+
+.stackList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--bg-surface);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid var(--border-color);
+
+  @include respond(sm) { padding: 16px; }
+}
+
+.stackItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stackMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stackName {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.stackPercent {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.stackTrack {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.stackBar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.8s ease;
 }

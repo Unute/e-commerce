@@ -12,6 +12,8 @@
   --brand: #518581;
   --brand-hover: #86AAA7;
   --brand-active: #487773;
+  --brand-warm: #AD7E5C;
+  --brand-warm-hover: #c49272;
   --text-secondary: #AFADB5;
   --text-primary: #000000;
   --text-accent: #518581;
@@ -33,6 +35,18 @@
   --bg-surface: #252525;
   --bg-elevated: #2f2f2f;
   --border-color: #3a3a3a;
+  --brand-warm: #c49272;
+  --brand-warm-hover: #d4a882;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes warmGlow {
+  0%, 100% { box-shadow: 0 4px 15px rgba(173, 126, 92, 0.15); }
+  50% { box-shadow: 0 4px 25px rgba(173, 126, 92, 0.35); }
 }
 
 

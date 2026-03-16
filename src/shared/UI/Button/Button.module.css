@@ -9,7 +9,31 @@
   max-width: 185px;
   border: none;
   padding: 14px 20px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(173, 126, 92, 0.35) 50%,
+    transparent 80%
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.button:hover:not(.button--disabled):not(.button--loading)::after,
+.button:hover:not(.disabled):not(.loading)::after {
+  left: 150%;
 }
 
 .disabled {
@@ -18,6 +42,7 @@
 
 .button:hover:not(.button--disabled):not(.button--loading) {
   background-color: #86AAA7;
+  box-shadow: 0 4px 12px rgba(173, 126, 92, 0.25);
 }
 
 .button:active:not(.button--disabled):not(.button--loading) {
@@ -27,6 +52,7 @@
 
 .button:hover:not(.disabled):not(.loading) {
   background-color: #86AAA7;
+  box-shadow: 0 4px 12px rgba(173, 126, 92, 0.25);
 }
 
 .button:active:not(.disabled):not(.loading) {
