@@ -31,8 +31,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <RootStoreProvider>
           <I18nProvider>
-            <div className="App">
               <Header />
+            <div className="App">
               {children}
             </div>
           </I18nProvider>
