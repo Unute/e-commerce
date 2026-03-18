@@ -1,5 +1,6 @@
 .input__wrapper {
   border: 1px solid var(--border-color);
+  border-radius: 8px;
   background: var(--bg-surface);
   padding: 16px 12px;
   width: 100%;

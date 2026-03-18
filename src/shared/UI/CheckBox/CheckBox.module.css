@@ -26,6 +26,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--bg-surface);
+  border-radius: 6px;
   outline: 1px solid var(--bg-surface);
   outline-offset: -1px;
 }
