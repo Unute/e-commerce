@@ -28,6 +28,11 @@ const formatExpiry = (value: string) => {
   return digits;
 };
 
+const formatName = (value: string) => {
+  // Разрешаем только буквы (латиница и кириллица), пробелы, дефисы и апострофы
+  return value.replace(/[^a-zA-Zа-яА-ЯёЁ\s\-']/g, '');
+};
+
 const PurchaseModal = observer(({ onConfirm, onCancel }: PurchaseModalProps) => {
   const store = useLocalObservable(() => new PurchaseFormStore());
   const t = useTranslations();
@@ -54,7 +59,7 @@ const PurchaseModal = observer(({ onConfirm, onCancel }: PurchaseModalProps) => 
           <label className={s.label}>{t('checkout.fullName')}</label>
           <Input
             value={store.form.name}
-            onChange={(v) => store.setField('name', v)}
+            onChange={(v) => store.setField('name', formatName(v))}
             placeholder={t('checkout.namePlaceholder')}
           />
           {store.errors.name && <span className={s.error}>{store.errors.name}</span>}

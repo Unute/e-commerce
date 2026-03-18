@@ -46,10 +46,10 @@ const MapPicker = observer(({ onSelect, onClose, confirmLabel, cancelLabel, load
             center={[55.751244, 37.618423]}
             zoom={10}
             style={{ height: '100%', width: '100%' }}
+            attributionControl={false}
           >
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
             />
             <ClickHandler onPick={(pos) => store.pickLocation(pos)} />
             {store.position && <Marker position={store.position} icon={markerIcon} />}

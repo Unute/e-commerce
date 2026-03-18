@@ -24,6 +24,14 @@
   height: 400px;
   width: 100%;
   cursor: crosshair;
+
+  :global(.leaflet-control-attribution) {
+    display: none !important;
+  }
+
+  :global(.leaflet-bottom) {
+    display: none !important;
+  }
 }
 
 .preview {
