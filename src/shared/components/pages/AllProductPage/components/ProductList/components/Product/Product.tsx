@@ -11,7 +11,7 @@ import { useStore } from '@/shared/stores/context';
 import type { Product } from "@/shared/types/product";
 import Quantity from './components/Quantity/Quantity';
 import Price from './components/Price/Price';
-
+import { useTranslations } from 'next-intl';
 
 type ProductProps = {
   product: Product;
@@ -24,7 +24,8 @@ type ProductProps = {
 const Product: React.FC<ProductProps> = observer(({ product, image, discountedPrice, inCart, setToast }) => {
   const router = useRouter();
   const { cartStore, authStore } = useStore();
-
+  const t = useTranslations();
+    
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!authStore.isAuthenticated) {
@@ -65,7 +66,7 @@ const Product: React.FC<ProductProps> = observer(({ product, image, discountedPr
             <Quantity product={product} cartStore={cartStore} setToast={setToast} />
           ) : (
             <Button onClick={handleAddToCart}>
-              Add to Cart
+              {t('product.addToCart')}
             </Button>
           )
         }

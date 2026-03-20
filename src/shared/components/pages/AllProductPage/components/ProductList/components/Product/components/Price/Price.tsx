@@ -7,11 +7,13 @@ type PriceProps = {
 };
 
 const Price: React.FC<PriceProps> = ({ price, discountPercent }) => {
-
+  const discountedPrice = discountPercent
+    ? (price * (1 - discountPercent / 100)).toFixed(2)
+    : price.toFixed(2);
 
   return (
     <>
-      <span className={s.priceDiscounted}>${discountPercent}</span>
+      <span className={s.priceDiscounted}>${discountedPrice}</span>
       <span className={s.priceOriginal}>${price}</span>
       <span className={s.discountBadge}>-{discountPercent}%</span>
     </>
